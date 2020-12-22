@@ -125,7 +125,6 @@ function startGame() {
     document.getElementById('game').setAttribute('class', 'game')
     document.getElementById('score-board').setAttribute('style', 'display:flex')
     document.getElementById('your-score').innerText = moves
-    console.log(name)
     fetch(`./api/user/${name}`)
         .then(data => data.json())
         .then(data => {
@@ -167,12 +166,10 @@ function closeModal() {
 
 function updateBestScore(score, name) {
     let bestScore = document.getElementById('best-score').innerText
-    console.log('here', bestScore, score, name)
-
     if (bestScore > score || bestScore == 'Not Played Yet') {
         console.log('updating')
         document.getElementById('best-score').innerText = score
-        fetch(`./api/user/update?name=${name}&score=${score}`).then(console.log)
+        fetch(`./api/score/update?name=${name}&score=${score}`).then(console.log)
     }
 }
 

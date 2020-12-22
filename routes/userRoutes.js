@@ -31,8 +31,10 @@ router.get('/user/:name', (req, res) => {
         }).catch(console.log)
 })
 
-router.get('/user/update', (req, res) => {
-    query(`UPDATE users SET score = '${req.query.score}' WHERE name='${req.query.name}'`).catch(console.log)
+router.get('/score/update', (req, res) => {
+    query(`UPDATE users SET score = '${req.query.score}' WHERE name='${req.query.name}'`)
+    .then(()=>res.json(req.query))
+    .catch(console.log)
 })
 
 module.exports = router;
