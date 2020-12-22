@@ -68,17 +68,17 @@ function handleCardClick(event) {
     if (currElement.id == 'open') {
         return 0
     }
+    moves++
+    document.getElementById('your-score').innerText = moves
     currElement.setAttribute('style', `background-color:${currElement.className};
     background-image:unset;
     transition:all .4s linear`)
     if (prevCard) {
-        if (prevCard.className == currElement.className && currElement.id != 'open') {
+        if (prevCard.className == currElement.className) {
             currElement.setAttribute('id', 'open')
             prevCard = undefined
             matches++
             clickedCard = 0
-            moves++
-            document.getElementById('your-score').innerText = moves
             if (matches == 5) {
                 let score = document.getElementById('your-score').innerText
                 let name = document.getElementById('name').innerText
@@ -96,8 +96,6 @@ function handleCardClick(event) {
                 }, 1000)
             }
         } else {
-            moves++
-            document.getElementById('your-score').innerText = moves
             clickedCard++
             setTimeout(() => {
                 currElement.setAttribute('style', `background-color:unset;transition:all .4s linear`)
@@ -111,15 +109,13 @@ function handleCardClick(event) {
         prevCard = currElement
         currElement.setAttribute('id', 'open')
         clickedCard++
-        moves++
-        document.getElementById('your-score').innerText = moves
     }
 }
 
 // Function to start game.
 function startGame() {
     let name = document.getElementById('your-name').value
-    if(isValidName(name)==false){
+    if (isValidName(name) == false) {
         return document.getElementById('name-error').innerText = 'Please Enter Valid Name'
     }
     document.getElementById('name').innerText = name
@@ -176,7 +172,7 @@ function updateBestScore(score, name) {
     if (bestScore > score || bestScore == 'Not Played Yet') {
         console.log('updating')
         document.getElementById('best-score').innerText = score
-        fetch(`./api/update?name=${name}&score=${score}`).then(console.log)
+        fetch(`./api/user/update?name=${name}&score=${score}`).then(console.log)
     }
 }
 
