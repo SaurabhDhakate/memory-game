@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game!</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href='https://fonts.googleapis.com/css?family=Ceviche One' rel='stylesheet'>
+</head>
+
+<body>
+    <h1>Memory Game! <span></span></h1>
+    <div id="score-board">
+        <p>Name : <span id="name"></span></p>
+        <p>Best Score : <span id="best-score"></span></p>
+        <p>Your Score : <span id="your-score"></span></p>
+    </div>
+    <img id="restart" src="https://www.flaticon.com/premium-icon/icons/svg/2499/2499151.svg" onclick="openModal()">
+    <div id="restart-modal">
+        <h3>Are You Sure To Restart</h3>
+        <button class="modal-btn" onclick="restart()">Yes</button>
+        <br><br>
+        <button class="modal-btn" onclick="closeModal()">No</button>
+    </div>
+    <div id="game">
+        <div id="start-game-div">
+            <label for="your-name">Your Name</label>
+            <input id="your-name" type="text">
+            <p id="name-error" style="color: red;"></p>
+            <button id="start-game" onclick="startGame()">Start</button>
+        </div>
+        
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+
+</html>
