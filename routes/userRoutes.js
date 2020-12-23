@@ -10,9 +10,9 @@ let db_config = {
     database: process.env.DB_NAME
 }
 
-function query(db, query) {
+function query(db, query, param) {
     return new Promise((resolve, reject) => {
-        db.query(query, (err, data) => {
+        db.query(query, param, (err, data) => {
             err ? reject(err) : resolve(data)
         })
     })
@@ -29,10 +29,10 @@ router.get('/user', (req, res) => {
     else {
         let db = mysql.createConnection(db_config)
         db.on('error', err => console.log(err.message))
-        query(db, `SELECT score FROM users WHERE name = '${req.query.name}';`)
+        query(db, 'SELECT score FROM users WHERE name = ?;', [req.query.name])
             .then(data => {
                 if (data.length == 0) {
-                    query(db, `INSERT INTO users VALUES ('${req.query.name}',NULL)`)
+                    query(db, 'INSERT INTO users VALUES (?,NULL)', [req.query.name])
                         .then(() => res.json({ score: null }))
                         .then(() => db.end())
                 }
@@ -50,7 +50,7 @@ router.get('/user', (req, res) => {
 router.get('/score/update', (req, res) => {
     let db = mysql.createConnection(db_config)
     db.on('error', err => console.log(err.message))
-    query(db, `UPDATE users SET score = '${req.query.score}' WHERE name='${req.query.name}'`)
+    query(db, `UPDATE users SET score = ? WHERE name=?`, [req.query.score, req.query.name])
         .then(() => res.json(req.query))
         .then(() => db.end())
         .catch(err => {
@@ -72,8 +72,8 @@ router.get('/send-mail', (req, res) => {
     }
     else {
         let mailer = require('./mailer')
-        mailer(user_email,score)
-        res.json({status:"OK"})
+        mailer(user_email, score)
+        res.json({ status: "OK" })
     }
 })
 
