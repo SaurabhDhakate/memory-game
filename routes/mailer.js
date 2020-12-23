@@ -1,4 +1,6 @@
-let api_key = '30b2775ce8c3dafe1bcd28d44547a3e6-b6190e87-5fdf0311';
+require('dotenv').config()
+
+let api_key = process.env.MAILGUN_KEY;
 let domain = 'sandboxaf8a2e86d20f4e339837015bc324f53e.mailgun.org';
 let mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
