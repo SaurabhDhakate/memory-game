@@ -1,16 +1,22 @@
 require('dotenv').config()
 
-let api_key = process.env.MAILGUN_KEY;
-let domain = 'sandboxaf8a2e86d20f4e339837015bc324f53e.mailgun.org';
-let mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
+const sgMail = require('@sendgrid/mail')
 
 function sendMail(email, score) {
-    let data = {
-        from: 'Saurabh from -Memory Game <me@samples.mailgun.org>',
-        to: `${email}`,
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+        to: `${email}`, // Change to your recipient
+        from: 'Saurabh <saurabh.dhakate@mountblue.tech>', // Change to your verified sender
         subject: 'New Best Score',
-        text: `Congrats ! You scored new best score ${score}`
-    };
-    mailgun.messages().send(data, (err, body) => err ? console.log(err) : console.log(body.message));
+        text: `Hooray ! Your new Best Score ${score}`
+    }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
 }
 module.exports = sendMail;
