@@ -93,7 +93,7 @@ body {
   
   .modal-btn {
     width: 40%;
-    background-color: rgb(109, 182, 224);
+    background-color: #6db6e0;
     color: white;
     font-weight: 800;
     border-radius: 10px;
@@ -144,14 +144,34 @@ body {
       justify-content: center;
       box-shadow: none;
       align-items: center;
+      height: max-content;
   }
-  #your-name{
+  #your-name,#your-email{
       margin-top: 20px;
       padding: 15px 10px;
       outline: none;
       border: none;
       border-radius: 10px;
   }
+  .email-open{
+    position: absolute;
+    border: #6db6e0 5px solid;
+    border-radius: 10px;
+    right: 0;
+    left: 0;
+    top: 100px;
+    margin: auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 10px;
+    width: 300px;
+  }
+  .email-close{
+    display: none;
+  }
+  
   
   @media(max-width:600px) {
     #game div {

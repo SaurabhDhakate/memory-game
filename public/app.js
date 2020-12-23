@@ -115,24 +115,26 @@ function handleCardClick(event) {
 // Function to start game.
 function startGame() {
     let name = document.getElementById('your-name').value
-    if (isValidName(name) == false) {
-        return document.getElementById('name-error').innerText = 'Please Enter Valid Name'
-    }
-    document.getElementById('name').innerText = name
-    document.getElementById('start-game-div').remove()
-    createDivsForColors(shuffledColors)
-    document.getElementById('restart').setAttribute('style', 'display:block')
-    document.getElementById('game').setAttribute('class', 'game')
-    document.getElementById('score-board').setAttribute('style', 'display:flex')
-    document.getElementById('your-score').innerText = moves
-    fetch(`./api/user/${name}`)
+    fetch(`./api/user?name=${name}`)
         .then(data => data.json())
         .then(data => {
-            if (data.score == null) {
-                document.getElementById('best-score').innerText = "Not Played Yet"
+            if (data.error) {
+                return document.getElementById('name-error').innerText = 'Please Enter Valid Name'
             }
             else {
-                document.getElementById('best-score').innerText = data.score
+                document.getElementById('name').innerText = name
+                document.getElementById('start-game-div').remove()
+                createDivsForColors(shuffledColors)
+                document.getElementById('restart').setAttribute('style', 'display:block')
+                document.getElementById('game').setAttribute('class', 'game')
+                document.getElementById('score-board').setAttribute('style', 'display:flex')
+                document.getElementById('your-score').innerText = moves
+                if (data.score == null) {
+                    document.getElementById('best-score').innerText = "Not Played Yet"
+                }
+                else {
+                    document.getElementById('best-score').innerText = data.score
+                }
             }
         })
 }
@@ -163,18 +165,27 @@ function closeModal() {
 }
 
 // Update Best Score
-
 function updateBestScore(score, name) {
     let bestScore = document.getElementById('best-score').innerText
     if (bestScore > score || bestScore == 'Not Played Yet') {
+        document.getElementById('email').setAttribute('class', 'email-open')
         console.log('updating')
         document.getElementById('best-score').innerText = score
         fetch(`./api/score/update?name=${name}&score=${score}`).then(console.log)
     }
 }
 
-// Validate name
-function isValidName(name) {
-    let nameRegex = /^[a-zA-Z ]{2,30}$/
-    return nameRegex.test(name)
+function sendMail() {
+    let score = document.getElementById('your-score').innerText;
+    let email = document.getElementById('user-email').value;
+    fetch(`./api/send-mail?score=${score}&email=${email}`)
+        .then(data => data.json())
+        .then((data) => {
+            if (data.error) {
+                document.getElementById('email-error').innerText = "Please Enter Valid Email"
+            }
+            else {
+                document.getElementById('email').setAttribute('class', 'email-close')
+            }
+        })
 }
