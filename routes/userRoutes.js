@@ -63,7 +63,8 @@ router.get('/send-mail', (req, res) => {
     let score = req.query.score
     let user_email = req.query.email
     let emailSchema = joi.object({
-        email: joi.string().email().required()
+        email: joi.string().email().required(),
+        score:joi.number().required()
     })
     let toValidate = { email: user_email }
     let result = emailSchema.validate(toValidate)
