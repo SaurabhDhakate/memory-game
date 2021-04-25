@@ -23,10 +23,12 @@
         <input type="text" name="address" id="address">
     </div>
     <div style="margin-top: 10px;"><label>Image</label>
-        <input type="text" name="image" id="image">
+        <input type="file" name="image" id="image">
     </div>
     <div style="margin-top: 10px;"><button onclick="submit()">Submit</button></div>
     <script>
+        let form = new FormData()
+        form.append('image', document.getElementById('image').value)
         function submit() {
             let body = {
                 name: document.getElementById('name').value,
@@ -35,14 +37,30 @@
                 address: document.getElementById('address').value,
                 image: document.getElementById('image').value,
             }
+            var data = new FormData();
+            data.append("key", "28c9b266952ca9d1a09972ed08c96fb9");
+            data.append("image", document.getElementById('image').value);
 
-            fetch('./v1/api/store', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            }).then(()=>{location.reload()}).catch(console.log)
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                }
+            });
+
+            xhr.open("POST", "https://api.imgbb.com/1/upload");
+            xhr.setRequestHeader("cache-control", "no-cache");
+
+            xhr.send(data);
+            // fetch('./v1/api/store', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(body)
+            // }).then(()=>{location.reload()}).catch(console.log)
         }
     </script>
 </body>
