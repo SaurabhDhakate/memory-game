@@ -33,20 +33,6 @@ router.get('/items/:id', (req, res) => {
     db.end(noop)
 })
 
-let upload = img => {
-    let form = new formData();
-    form.append('image', img)
-    form.append('key', IMG_API_KEY)
-    return new Promise((res, rej) => {
-        Axios({
-            method: "post",
-            url: "https://api.imgbb.com/1/upload",
-            data: form,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-            .then(d => res(d)).catch(rej)
-    })
-}
 router.post('/store', (req, res) => {
     console.log(req.body)
 
