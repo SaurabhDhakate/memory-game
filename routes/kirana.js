@@ -1,29 +1,23 @@
 const express = require('express');
-const mysql = require('mysql')
+const mysql = require('mysql');
 const router = express.Router();
+const noop = () => { };
 
-let db = mysql.createConnection({
-    host: process.env.DB_HOST ||'remotemysql.com',
-    password: process.env.DB_PASS||'pRGiA6vdVO',
-    user: process.env.DB_USER||'iFOyzVyv69',
-    database: process.env.DB_NAME||'iFOyzVyv69'
-})
-
-db.on('error', err => console.log(err))
-
-function query(query) {
-    return new Promise((resolve, reject) => {
-        db.query(query, (err, data) => {
-            err ? reject(err) : resolve(data)
-        })
-    })
+const DB_CRED = {
+    host: process.env.DB_HOST || 'remotemysql.com',
+    password: process.env.DB_PASS || 'pRGiA6vdVO',
+    user: process.env.DB_USER || 'iFOyzVyv69',
+    database: process.env.DB_NAME || 'iFOyzVyv69'
 }
-router.get('/store', (req, res) => {
-    query(`SELECT * FROM shops;`)
-        .then(data => {
-            res.json(data)
-        }).catch(console.log)
-})
 
+router.get('/store', (req, res) => {
+    let db = mysql.createConnection(DB_CRED)
+    db.connect(noop)
+    db.on('error', noop)
+    db.query('select * from shops;', (e, d) => {
+        e ? noop : res.json(d)
+    })
+    db.end(noop)
+})
 
 module.exports = router;
