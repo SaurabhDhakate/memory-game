@@ -20,4 +20,14 @@ router.get('/store', (req, res) => {
     db.end(noop)
 })
 
+router.get('/items/:id', (req, res) => {
+    let db = mysql.createConnection(DB_CRED)
+    db.connect(noop)
+    db.on('error', noop)
+    db.query(`select * from items where shop_id = ${req.params.id};`, (e, d) => {
+        e ? noop : res.json(d)
+    })
+    db.end(noop)
+})
+
 module.exports = router;
