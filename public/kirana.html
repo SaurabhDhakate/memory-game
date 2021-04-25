@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Admin Kirana wala</h2>
+    <div style="margin-top: 10px;"><label>Name</label>
+        <input type="text" name="name" id="name">
+    </div>
+    <div style="margin-top: 10px;"><label>Phone</label>
+        <input type="text" name="phone" id="phone">
+    </div>
+    <div style="margin-top: 10px;"><label>Timing</label>
+        <input type="text" name="timing" id="timing">
+    </div>
+    <div style="margin-top: 10px;"><label>Address</label>
+        <input type="text" name="address" id="address">
+    </div>
+    <div style="margin-top: 10px;"><label>Image</label>
+        <input type="text" name="image" id="image">
+    </div>
+    <div style="margin-top: 10px;"><button onclick="submit()">Submit</button></div>
+    <script>
+        function submit() {
+            let body = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                timing: document.getElementById('timing').value,
+                address: document.getElementById('address').value,
+                image: document.getElementById('image').value,
+            }
+
+            fetch('./v1/api/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then(()=>{location.reload()}).catch(console.log)
+        }
+    </script>
+</body>
+
+</html>

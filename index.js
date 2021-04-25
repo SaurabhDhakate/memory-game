@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 dotenv.config()
-
+app.use(express.json())
 app.use(express.static('public'))
 app.use('/api', require('./routes/userRoutes'))
 app.use('/v1/api', require('./routes/kirana'))
