@@ -4,9 +4,9 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 dotenv.config()
+app.use(require('cors')())
 app.use(express.json())
-app.use(express.static('kirana/app'))
-app.use('/game',express.static('public'))
+app.use(express.static('public'))
 app.use('/api', require('./routes/userRoutes'))
 app.use('/v1/api', require('./routes/kirana'))
 app.listen(PORT, () => console.log("Listenng on Port : ", PORT))
