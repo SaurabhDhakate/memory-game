@@ -205,8 +205,9 @@ function AppComponent_option_47_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const shop_r3 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("value", shop_r3.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](shop_r3.id + "-" + shop_r3.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](shop_r3.id + " - " + shop_r3.name);
 } }
 class AppComponent {
     constructor(http) {
@@ -226,9 +227,10 @@ class AppComponent {
         this.itemImg = e.target.files[0];
     }
     imageUpload(img) {
+        console.log(img);
         let imageForm = new FormData();
-        this.form.set('image', img);
-        this.form.set('key', '28c9b266952ca9d1a09972ed08c96fb9');
+        imageForm.set('image', img);
+        imageForm.set('key', '28c9b266952ca9d1a09972ed08c96fb9');
         return new Promise((resolve, reject) => {
             fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: imageForm })
                 .then(response => response.json())
@@ -257,13 +259,22 @@ class AppComponent {
         });
     }
     submitItem() {
-        this.imageUpload(this.itemImage).then(url => {
+        this.imageUpload(this.itemImg).then(url => {
             let data = {
                 name: this.itemName,
                 price: this.itemPrice,
                 image: url,
                 shopId: this.shopId
             };
+            this.http.post('./v1/api/item', data).subscribe(() => {
+                this.img = null;
+                this.file.nativeElement.value = null;
+                this.name = null;
+                this.phone = null;
+                this.address = null;
+                this.timing = null;
+                alert('Item added');
+            }, () => { });
         });
     }
     getAllShops() {
@@ -278,7 +289,7 @@ AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCompo
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.file = _t.first);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.itemImage = _t.first);
-    } }, decls: 61, vars: 8, consts: [[1, "navbar", "navbar-dark", "bg-success"], [1, "container-fluid"], [1, "navbar-brand", "mb-0", "h1"], ["tabindex", "-1", "id", "offcanvasExample", "aria-labelledby", "offcanvasExampleLabel", 1, "offcanvas", "offcanvas-end"], [1, "offcanvas-header"], ["id", "offcanvasExampleLabel", 1, "offcanvas-title"], ["type", "button", "data-bs-dismiss", "offcanvas", "aria-label", "Close", 1, "btn-close", "text-reset"], [1, "offcanvas-body"], [1, "row", "m-0", "col-12", "justify-content-center"], ["id", "accordionExample", 1, "accordion", "mt-5", "col-10", "col-md-8"], [1, "accordion-item"], ["id", "headingOne", 1, "accordion-header", "m-0"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#collapseOne", "aria-expanded", "true", "aria-controls", "collapseOne", 1, "accordion-button", "collapsed"], ["id", "collapseOne", "aria-labelledby", "headingOne", "data-bs-parent", "#accordionExample", 1, "accordion-collapse", "collapse"], [1, "accordion-body"], [1, "col-xs-12", "row"], [1, "col-md-6"], [1, "input-group", "mb-3"], ["type", "file", "id", "inputGroupFile01", 1, "form-control", 3, "change"], ["file", ""], ["type", "text", "placeholder", "Shop Name", "aria-label", "Username", "aria-describedby", "basic-addon1", "name", "name", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Address", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Phone", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Timing", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "col-12", "text-center"], ["type", "button", 1, "btn", "btn-primary", 3, "click"], ["id", "headingTwo", 1, "accordion-header", "m-0"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#collapseTwo", "aria-expanded", "false", "aria-controls", "collapseTwo", 1, "accordion-button", "collapsed"], ["id", "collapseTwo", "aria-labelledby", "headingTwo", "data-bs-parent", "#accordionExample", 1, "accordion-collapse", "collapse"], ["aria-label", ".form-select-lg example", 1, "form-select", "mb-3", 3, "ngModel", "ngModelChange"], ["value", "shop.id", 4, "ngFor", "ngForOf"], ["itemImage", ""], ["type", "text", "placeholder", "Item Name", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "number", "placeholder", "Price", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["value", "shop.id"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 61, vars: 8, consts: [[1, "navbar", "navbar-dark", "bg-success"], [1, "container-fluid"], [1, "navbar-brand", "mb-0", "h1"], ["tabindex", "-1", "id", "offcanvasExample", "aria-labelledby", "offcanvasExampleLabel", 1, "offcanvas", "offcanvas-end"], [1, "offcanvas-header"], ["id", "offcanvasExampleLabel", 1, "offcanvas-title"], ["type", "button", "data-bs-dismiss", "offcanvas", "aria-label", "Close", 1, "btn-close", "text-reset"], [1, "offcanvas-body"], [1, "row", "m-0", "col-12", "justify-content-center"], ["id", "accordionExample", 1, "accordion", "mt-5", "col-10", "col-md-8"], [1, "accordion-item"], ["id", "headingOne", 1, "accordion-header", "m-0"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#collapseOne", "aria-expanded", "true", "aria-controls", "collapseOne", 1, "accordion-button", "collapsed"], ["id", "collapseOne", "aria-labelledby", "headingOne", "data-bs-parent", "#accordionExample", 1, "accordion-collapse", "collapse"], [1, "accordion-body"], [1, "col-xs-12", "row"], [1, "col-md-6"], [1, "input-group", "mb-3"], ["type", "file", "id", "inputGroupFile01", 1, "form-control", 3, "change"], ["file", ""], ["type", "text", "placeholder", "Shop Name", "aria-label", "Username", "aria-describedby", "basic-addon1", "name", "name", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Address", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Phone", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "text", "placeholder", "Timing", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "col-12", "text-center"], ["type", "button", 1, "btn", "btn-primary", 3, "click"], ["id", "headingTwo", 1, "accordion-header", "m-0"], ["type", "button", "data-bs-toggle", "collapse", "data-bs-target", "#collapseTwo", "aria-expanded", "false", "aria-controls", "collapseTwo", 1, "accordion-button", "collapsed"], ["id", "collapseTwo", "aria-labelledby", "headingTwo", "data-bs-parent", "#accordionExample", 1, "accordion-collapse", "collapse"], ["aria-label", ".form-select-lg example", 1, "form-select", "mb-3", 3, "ngModel", "ngModelChange"], [3, "value", 4, "ngFor", "ngForOf"], ["itemImage", ""], ["type", "text", "placeholder", "Item Name", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "number", "placeholder", "Price", "aria-label", "Username", "aria-describedby", "basic-addon1", 1, "form-control", 3, "ngModel", "ngModelChange"], [3, "value"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "nav", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "span", 2);
@@ -363,7 +374,7 @@ AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCompo
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](45, "div", 16);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](46, "select", 29);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function AppComponent_Template_select_ngModelChange_46_listener($event) { return ctx.shopId = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](47, AppComponent_option_47_Template, 2, 1, "option", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](47, AppComponent_option_47_Template, 2, 2, "option", 30);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](48, "div", 16);

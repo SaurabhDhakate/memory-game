@@ -34,12 +34,21 @@ router.get('/items/:id', (req, res) => {
 })
 
 router.post('/store', (req, res) => {
-    console.log(req.body)
-
     let db = mysql.createConnection(DB_CRED)
     db.connect(noop)
     db.on('error', noop)
     db.query(`INSERT INTO shops (name, phone, timing, address, image) VALUES ('${req.body.name}', '${req.body.phone}', '${req.body.timing}', '${req.body.address}', '${req.body.image}')`, (e, d) => {
+        e ? console.log(e) : res.json(d)
+    })
+    db.end(noop)
+})
+
+router.post('/item', (req, res) => {
+    console.log(req.body)
+    let db = mysql.createConnection(DB_CRED)
+    db.connect(noop)
+    db.on('error', noop)
+    db.query(`INSERT INTO items (shop_id, name, price, image) VALUES ('${Number(req.body.shopId)}', '${req.body.name}', '${req.body.price}', '${req.body.image}')`, (e, d) => {
         e ? console.log(e) : res.json(d)
     })
     db.end(noop)
