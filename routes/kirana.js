@@ -58,4 +58,31 @@ router.get('/removeitem/:id', (req, res) => {
     query(dbquery).then(data => res.json(data)).catch(noop)
 })
 
+router.get('/login', (req, res) => {
+    let email = req.query.email
+    let otp = req.query.otp
+    query(`SELECT otp,fullName FROM k_users WHERE email = '${email}'`)
+        .then(data => {
+            console.log(otp, data)
+            if(data[0].otp == otp){
+                res.json({
+                    name:data[0].fullName,
+                    email:email
+                })
+            } else {
+                res.json(null)
+            }
+        }).catch(_=>res.json(null))
+})
+
+router.get('/otp', (req, res) => {
+    console.log('object')
+    let email = req.query.email
+    let fullName = req.query.fullName
+    let otp = Math.floor(Math.random() * 1000000);
+    console.log(email, fullName, otp)
+    query(`INSERT INTO k_users (email, fullName, otp) VALUE ('${email}','${fullName}','${otp}')`)
+    .then(()=>{res.status(200); res.end()}).catch(console.log)
+})
+
 module.exports = router;
