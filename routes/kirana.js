@@ -3,6 +3,28 @@ const mysql = require('mysql');
 const router = express.Router();
 const noop = _ => { };
 
+require('dotenv').config()
+
+const sgMail = require('@sendgrid/mail')
+
+function sendMail(email, otp) {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+        to: `${email}`, // Change to your recipient
+        from: 'Saurabh <saurabhdhakateatg@gmail.com>', // Change to your verified sender
+        subject: 'OTP for login to KiranaWala',
+        text: `One Time Password - ${otp}`
+    }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+
 const DB_CRED = {
     host: process.env.DB_HOST || 'remotemysql.com',
     password: process.env.DB_PASS || 'pRGiA6vdVO',
@@ -81,6 +103,7 @@ router.get('/otp', (req, res) => {
     let fullName = req.query.fullName
     let otp = Math.floor(Math.random() * 1000000);
     console.log(email, fullName, otp)
+    sendMail(email, otp)
     query(`INSERT INTO k_users (email, fullName, otp) VALUE ('${email}','${fullName}','${otp}')`)
     .then(()=>{res.status(200); res.end()}).catch(console.log)
 })
