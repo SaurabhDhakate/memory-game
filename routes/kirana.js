@@ -117,6 +117,8 @@ router.get('/otp', (req, res) => {
 router.get('/logout', (req, res) => {
     let email = req.query.email
     let otp = new Date().getTime()
+    otp = String(otp).slice(-6)
+    console.log(otp)
     query(`UPDATE k_users SET otp = '${otp}' WHERE email = '${email}';`)
         .then(()=>{res.status(200); res.end()})
         .catch((e)=>{console.log(e);res.status(404); res.end()})
