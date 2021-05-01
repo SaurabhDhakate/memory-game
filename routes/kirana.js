@@ -1,3 +1,4 @@
+const sgMail = require('@sendgrid/mail')
 const express = require('express');
 const mysql = require('mysql');
 const router = express.Router();
@@ -5,13 +6,11 @@ const noop = _ => { };
 
 require('dotenv').config()
 
-const sgMail = require('@sendgrid/mail')
-
 function sendMail(email, otp) {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const msg = {
-        to: `${email}`, // Change to your recipient
-        from: 'Saurabh <saurabhdhakateatg@gmail.com>', // Change to your verified sender
+        to: `${email}`,
+        from: 'ADMIN-KIRANAWALA <saurabhdhakateatg@gmail.com>', 
         subject: 'OTP for login to KiranaWala',
         text: `One Time Password - ${otp}`
     }
@@ -98,11 +97,10 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/otp', (req, res) => {
-    console.log('object')
     let email = req.query.email
     let fullName = req.query.fullName
     let otp = Math.floor(Math.random() * 1000000);
-    query(`SELECT * FROM k_user WHERE email = '${email}';`)
+    query(`SELECT * FROM k_users WHERE email = '${email}';`)
         .then(data => {
             if (data.length == 0) {
                 sendMail(email, otp)
@@ -110,10 +108,18 @@ router.get('/otp', (req, res) => {
             }
             else {
                 sendMail(email, otp)
-                query(`UPDATE k_users otp = '${otp}' WHERE email = '${email}';`)
+                query(`UPDATE k_users SET otp = '${otp}' WHERE email = '${email}';`)
             }
         })
-        .then(()=>{res.status(200); res.end()}).catch(()=>{res.status(404); res.end()})
+        .then(()=>{res.status(200); res.end()}).catch((e)=>{console.log(e);res.status(404); res.end()})
+})
+
+router.get('/logout', (req, res) => {
+    let email = req.query.email
+    let otp = new Date()
+    query(`UPDATE k_users SET otp = '${otp}' WHERE email = '${email}';`)
+        .then(()=>{res.status(200); res.end()})
+        .catch((e)=>{console.log(e);res.status(404); res.end()})
 })
 
 module.exports = router;
