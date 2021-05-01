@@ -102,10 +102,18 @@ router.get('/otp', (req, res) => {
     let email = req.query.email
     let fullName = req.query.fullName
     let otp = Math.floor(Math.random() * 1000000);
-    console.log(email, fullName, otp)
-    sendMail(email, otp)
-    query(`INSERT INTO k_users (email, fullName, otp) VALUE ('${email}','${fullName}','${otp}')`)
-    .then(()=>{res.status(200); res.end()}).catch(console.log)
+    query(`SELECT * FROM k_user WHERE email = '${email}';`)
+        .then(data => {
+            if (data.length == 0) {
+                sendMail(email, otp)
+                query(`INSERT INTO k_users (email, fullName, otp) VALUE ('${email}','${fullName}','${otp}');`)
+            }
+            else {
+                sendMail(email, otp)
+                query(`UPDATE k_users otp = '${otp}' WHERE email = '${email}';`)
+            }
+        })
+        .then(()=>{res.status(200); res.end()}).catch(()=>{res.status(404); res.end()})
 })
 
 module.exports = router;
